@@ -9,120 +9,128 @@ namespace TicTacToe
         {
             //create a board list to be used as the board and change index points in it
             //the list is of string type because the userinput will be "X" or "O".
-            var board = new List<string>() { "X", "1", "2", "3", "4", "5", "6", "7", "8", "9" };
-
+            bool gameAgain = true;
             Console.WriteLine("Welcome to Tic Tac Toe!");
-            string player2Marker = "";
-            var player1Marker = PlayerInput();
 
-            //assign marker to each player        //this is before the while loop because we want it to be only once, not be each turn
-            if (player1Marker == "X")
+            //This while loop is used to regenarate the board and markers if players want to play again
+            while (gameAgain)
             {
-                player2Marker = "O";
-            }
-            else if (player1Marker == "O")
-            {
-                player2Marker = "X";
-            }
-            Console.WriteLine($"Player 1 is {player1Marker}");
-            Console.WriteLine($"Player 2 is {player2Marker}");
-            //see who goes first
-            string turn = ChooseFirst();
-            //display who goes first for 3 seconds before moving on to the actual game
-            System.Threading.Thread.Sleep(3000);
+                var board = new List<string>() { "X", "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+                string player2Marker = "";
+                var player1Marker = PlayerInput();
 
-            var gameOn = true;
-            while (gameOn)
-
-                //TODO 1) figure out how when play again the board is reset
-                
-            {
-                
-                if (turn != "Player 2")
+                //assign marker to each player        //this is before the while loop because we want it to be only once, not be each turn
+                if (player1Marker == "X")
                 {
+                    player2Marker = "O";
+                }
+                else if (player1Marker == "O")
+                {
+                    player2Marker = "X";
+                }
+                Console.WriteLine($"Player 1 is {player1Marker}");
+                Console.WriteLine($"Player 2 is {player2Marker}");
+                //see who goes first
+                string turn = ChooseFirst();
+                //display who goes first for 3 seconds before moving on to the actual game
+                System.Threading.Thread.Sleep(3000);
 
-                    //play out player1's turn
-                    Console.Clear();
-                    DisplayBoard(board);
-                    Console.WriteLine("Player 1:");
-                    //get players pick for position
-                    var position = PlayerChoice(board);
-                    //place the players marker on his position
-                    if (SpaceCheck(board, position) == true)
+                var gameOn = true;
+                while (gameOn)
+                {
+                    //the way the while loop works is that the turn goes back and forth between each player until the game is won or it's a draw
+                    //then the gameOn condition becomes false
+                    if (turn != "Player 2")
                     {
-                        PlaceMarker(board, player1Marker, position);
-                    }
-                    else if (SpaceCheck(board, position) == false)
-                    {
-                        PlayerChoice(board);
-                        SpaceCheck(board, position);
-                    }
-                    
-                    //check if player has won with his turn
-                    if (WinCheck(board, player1Marker))
-                    {
+
+                        //play out player1's turn
+                        Console.Clear();
                         DisplayBoard(board);
-                        Console.WriteLine("Congratulations, Player 1 won the game!");
-                        gameOn = false;
-                    }
-                    else
-                    {
-                        if (FullBoardCheck(board))
+                        Console.WriteLine("Player 1:");
+                        //get players pick for position
+                        var position = PlayerChoice(board);
+                        //place the players marker on his position
+                        if (SpaceCheck(board, position) == true)
+                        {
+                            PlaceMarker(board, player1Marker, position);
+                        }
+                        else if (SpaceCheck(board, position) == false)
+                        {
+                            PlayerChoice(board);
+                            SpaceCheck(board, position);
+                        }
+
+                        //check if player has won with his turn
+                        if (WinCheck(board, player1Marker))
                         {
                             DisplayBoard(board);
-                            Console.WriteLine("It's a Cat Game");
+                            Console.WriteLine("Congratulations, Player 1 won the game!");
                             gameOn = false;
                         }
-                        else         //player 1 has finished his turn and has not won or tied
+                        else
                         {
-                            turn = "Player 2";
+                            if (FullBoardCheck(board))
+                            {
+                                DisplayBoard(board);
+                                Console.WriteLine("It's a Cat Game");
+                                gameOn = false;
+                            }
+                            else         //player 1 has finished his turn and has not won or tied
+                            {
+                                turn = "Player 2";
+                            }
+                        }
+                    }
+                    //if turn to begin with is player 2
+                    else
+                    {
+                        Console.Clear();
+                        DisplayBoard(board);
+                        Console.WriteLine("Player 2:");
+                        var position = PlayerChoice(board);
+                        if (SpaceCheck(board, position))
+                        {
+                            PlaceMarker(board, player2Marker, position);
+                        }
+                        else if (SpaceCheck(board, position) == false)
+                        {
+                            PlayerChoice(board);
+                            SpaceCheck(board, position);
+                        }
+
+                        if (WinCheck(board, player2Marker))
+                        {
+                            DisplayBoard(board);
+                            Console.WriteLine($"Congratulations, Player 2 has won the game!");
+                            gameOn = false;
+                        }
+                        else
+                        {
+                            if (FullBoardCheck(board))
+                            {
+                                DisplayBoard(board);
+                                Console.WriteLine("It's a Cat Game");
+                                //now we ask the player if they want to play again
+                                gameOn = false;
+
+                            }
+                            else         //player 2 has finished his turn and has not won or tied
+                            {
+                                turn = "Player 1";
+                            }
                         }
                     }
                 }
-                //if turn to begin with is player 2
-                else
+                gameAgain = PlayAgain();
+                Console.Clear();
+                if (gameAgain)
                 {
-                    Console.Clear();
-                    DisplayBoard(board);
-                    Console.WriteLine("Player 2:");
-                    var position = PlayerChoice(board);
-                    if (SpaceCheck(board, position))
-                    {
-                        PlaceMarker(board, player2Marker, position);
-                    }
-                    else if (SpaceCheck(board, position) == false)
-                    {
-                        PlayerChoice(board);
-                        SpaceCheck(board, position);
-                    }
-                    
-                    if (WinCheck(board, player2Marker))
-                    {
-                        DisplayBoard(board);
-                        Console.WriteLine($"Congratulations, Player 2 has won the game!");
-                        gameOn = false;
-                    }
-                    else
-                    {
-                        if (FullBoardCheck(board))
-                        {
-                            DisplayBoard(board);
-                            Console.WriteLine("It's a Cat Game");
-                            //now we ask the player if they want to play again
-                            gameOn = false;
-
-                        }
-                        else         //player 2 has finished his turn and has not won or tied
-                        {
-                            turn = "Player 1";
-                        }
-                    }
+                    Console.WriteLine("Thanks for wanting to play another round, good choice!");
                 }
             }
             
-
-
         }
+            
         //Write a function that can print out a board. Set up your board as a list, where each index 1-9 corresponds with a number on a number pad, so you get a 3 by 3 board representation.
         public static void DisplayBoard(List<string> board)
         {
