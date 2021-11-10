@@ -70,7 +70,7 @@ namespace TicTacToe
                         if (FullBoardCheck(board))
                         {
                             DisplayBoard(board);
-                            Console.WriteLine("It's a draw");
+                            Console.WriteLine("It's a Cat Game");
                             gameOn = false;
                         }
                         else         //player 1 has finished his turn and has not won or tied
@@ -107,7 +107,7 @@ namespace TicTacToe
                         if (FullBoardCheck(board))
                         {
                             DisplayBoard(board);
-                            Console.WriteLine("It's a draw");
+                            Console.WriteLine("It's a Cat Game");
                             //now we ask the player if they want to play again
                             gameOn = false;
 
