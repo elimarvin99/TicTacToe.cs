@@ -9,6 +9,8 @@ namespace TicTacToe
         {
             //create a board list to be used as the board and change index points in it
             //the list is of string type because the userinput will be "X" or "O".
+            var player1Counter = 0;
+            var player2Counter = 0;
             bool gameAgain = true;
             Console.WriteLine("Welcome to Tic Tac Toe!");
 
@@ -65,6 +67,7 @@ namespace TicTacToe
                         {
                             DisplayBoard(board);
                             Console.WriteLine("Congratulations, Player 1 won the game!");
+                            player1Counter++;
                             gameOn = false;
                         }
                         else
@@ -102,6 +105,7 @@ namespace TicTacToe
                         {
                             DisplayBoard(board);
                             Console.WriteLine($"Congratulations, Player 2 has won the game!");
+                            player2Counter++;
                             gameOn = false;
                         }
                         else
@@ -128,7 +132,18 @@ namespace TicTacToe
                     Console.WriteLine("Thanks for wanting to play another round, good choice!");
                 }
             }
-            
+            if (player1Counter < player2Counter)
+            {
+                Console.WriteLine($"Player 2 is the overall winner. Player 2 has won {player2Counter} round(s) while Player 1 has won only {player1Counter} round(s).");
+            }
+            else if (player1Counter > player2Counter)
+            {
+                Console.WriteLine($"Player 1 is the overall winner. Player 1 has won {player1Counter} round(s) while Player 2 has won only {player2Counter} round(s).");
+            }
+            else if (player1Counter == player2Counter)
+            {
+                Console.WriteLine($"You guys are both equally good, you have both won {player2Counter} round(s) each, good job!");
+            }
         }
             
         //Write a function that can print out a board. Set up your board as a list, where each index 1-9 corresponds with a number on a number pad, so you get a 3 by 3 board representation.
